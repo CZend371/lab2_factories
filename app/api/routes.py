@@ -96,7 +96,7 @@ async def pipeline_info():
     inference_service = EmailTopicInferenceService()
     return inference_service.get_pipeline_info()
 
-@router.post("/emails/store", response_model=EmailStoreResponse)
+@router.post("/emails", response_model=EmailStoreResponse)
 async def store_email(request: EmailStoreRequest):
     """Store an email with optional ground truth label"""
     try:
