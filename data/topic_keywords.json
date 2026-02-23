@@ -13,5 +13,11 @@
   },
   "support": {
     "description": "Customer support, help requests, and technical issues"
+  },
+  "PTO": {
+    "description": "Information on paid time off and how to use it"
+  },
+  "Health Policy": {
+    "description": "Health, dental, life insurance, FMLA and other insurances the company provides as benefits to its employees."
   }
 }
