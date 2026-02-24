@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 from app.services.email_topic_inference import EmailTopicInferenceService
 from app.services.email_storage import EmailStorageService
+from app.features.factory import FeatureGeneratorFactory
 from app.dataclasses import Email
 
 router = APIRouter()
@@ -129,28 +130,15 @@ async def store_email(request: EmailStoreRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# TODO: LAB ASSIGNMENT - Part 2 of 2
-# Create a GET endpoint at "/features" that returns information about all feature generators
-# available in the system.
-#
-# Requirements:
-# 1. Create a GET endpoint at "/features"
-# 2. Import FeatureGeneratorFactory from app.features.factory
-# 3. Use FeatureGeneratorFactory.get_available_generators() to get generator info
-# 4. Return a JSON response with the available generators and their feature names
-# 5. Handle any exceptions with appropriate HTTP error responses
-#
-# Expected response format:
-# {
-#   "available_generators": [
-#     {
-#       "name": "spam",
-#       "features": ["has_spam_words"]
-#     },
-#     ...
-#   ]
-# }
-#
-# Hint: Look at the existing endpoints above for patterns on error handling
-# Hint: You may need to instantiate generators to get their feature names
-
+@router.get("/features")
+async def get_features():
+    """Get information about all available feature generators"""
+    try:
+        factory = FeatureGeneratorFactory()
+        generators_info = factory.get_available_generators()
+        
+        return {
+            "available_generators": generators_info
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
