@@ -14,46 +14,45 @@ GENERATORS = {
 
 class FeatureGeneratorFactory:
     """Factory for creating and managing feature generators"""
-    
+
     def __init__(self):
         self._generators = GENERATORS
-    
-    def generate_all_features(self, email: Email, 
+
+    def generate_all_features(self, email: Email,
                             generator_names: List[str] = None) -> Dict[str, Any]:
         """Generate features using multiple generators"""
         if generator_names is None:
             generator_names = list(self._generators.keys())
-        
+
         all_features = {}
-        
+
         for gen_name in generator_names:
             generator_class = self._generators[gen_name]
             generator = generator_class()
             features = generator.generate_features(email)
-            
+
             # Prefix features with generator name to avoid conflicts
             for feature_name, value in features.items():
                 prefixed_name = f"{gen_name}_{feature_name}"
                 all_features[prefixed_name] = value
-        
+
         return all_features
-    
+
     def get_available_generators(self) -> List[Dict[str, Any]]:
         """
         Get information about all available feature generators
-        
+
         Returns:
             List of dicts with generator name and feature names
         """
         generators_info = []
-        
+
         for gen_name, generator_class in self._generators.items():
-            # Instantiate generator to access feature_names
             generator = generator_class()
-            
+
             generators_info.append({
                 "name": gen_name,
                 "features": generator.feature_names
             })
-        
+
         return generators_info
